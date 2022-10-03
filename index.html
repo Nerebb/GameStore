@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameApp</title>
+    <script src="jarva.js" defer></script>
+    <link rel="stylesheet" href="resetCSS.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="mainpage">
+      <div class="navbar">
+        <div class="navbar-left">
+          <span class="nav Home">Home</span>
+          <span class="nav Streams">Streams</span>
+          <span class="nav GameStore">Store</span>
+          <span class="nav News">News</span>
+        </div>
+        <div class="navbar-right">
+          <img
+            class="img navShoppingCart"
+            src="./shopping-cart.png"
+            alt="WishList"
+          />
+          <img class="img navWishlist" src="./heart.png" alt="WishList" />
+          <img class="img Profile" src="userProfile.png" alt="Profile" />
+        </div>
+      </div>
+      <div class="container">
+        <div class="searchbox">
+          <div class="searchTickbox">
+            <div class="search-fields Categories">
+              <h1 class="search-title">Categories</h1>
+              <ul>
+                <li>
+                  <label for="checkbox" class="checkbox-title" title="cate1">Cate 1</label>
+                  <input type="checkbox" class="checkbox categories-input" />
+                </li>
+              </ul>
+            </div>
+            <div class="search-fields Platform">
+              <h1 class="search-title">Platform</h1>
+              <ul>
+                <li>
+                  <label for="checkbox" class="checkbox-title">Cate 1</label>
+                  <input type="checkbox" class="checkbox categories-input" />
+                </li>
+              </ul>
+            </div>
+            <div class="search-fields GameType">
+              <h1 class="search-title">Game types</h1>
+              <ul>
+                <li>
+                  <label for="checkbox" class="checkbox-title">Cate 1</label>
+                  <input type="checkbox" class="checkbox categories-input" />
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="priceFilter">
+            <div class="search-fields Price">
+              <label for="Price" class="search-title">Price</label>
+              <div class="inputPrice">
+                <input
+                  type="number"
+                  class="input-pricebox Min"
+                  placeholder="Min price"
+                />
+                <span class="stash">-</span>
+                <input
+                  type="number"
+                  class="input-pricebox"
+                  placeholder="Max price"
+                />
+              </div>
+            </div>
+            <button class="applyFilter btn" onclick="searchGame()">
+              Apply Filters
+            </button>
+          </div>
+        </div>
+        <div class="gameCategory">
+          <div class="gameFrontPage">
+            <ul class="ulgameFrontPage"></ul>
+          </div>
+          <ul class="gameList">
+            <li class="gameDescript">
+              <p class="gameImg">gameImg</p>
+              <p class="gameName">Game name</p>
+              <p class="gamePlatform">Platform</p>
+              <div class="gameFooter">
+                <p class="gamePrice">Price</p>
+                <button class="btn-buy btn" onclick="Buy()">Buy</button>
+              </div>
+            </li>
+            <li class="gameDescript">
+              <p class="gameImg">gameImg</p>
+              <p class="gameName">Game name</p>
+              <p class="gamePlatform">Platform</p>
+              <div class="gameFooter">
+                <p class="gamePrice">Price</p>
+                <button class="btn-buy btn" onclick="Buy()">Buy</button>
+              </div>
+            </li>
+            <li class="gameDescript">
+              <p class="gameImg">gameImg</p>
+              <p class="gameName">Game name</p>
+              <p class="gamePlatform">Platform</p>
+              <div class="gameFooter">
+                <p class="gamePrice">Price</p>
+                <button class="btn-buy btn" onclick="Buy()">Buy</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
