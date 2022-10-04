@@ -24,7 +24,7 @@ const urlTagsList = getUrl("steamspy-tags", "");
 let appId = "";
 const urlGameDetail = getUrl("single-game", `/:${appId}`);
 const urlFeaturedGames = getUrl("features", "");
-
+let checkbox;
 Promise.all([
   getData(urlAllGames),
   getData(urlGenresList),
@@ -36,22 +36,15 @@ Promise.all([
   dataTagsList = allData[2];
   dataFeatureGame = allData[3];
 
-  Promise.all([
-    renderImgFeatureGame(),
+  renderImgFeatureGame(),
     renderImgAllGame(),
     renderCategories(),
     renderPlatform(),
     renderTypes(),
-  ]).then((allRender) => {
-    imgFeatureGame = allRender[0];
-    gameDescript = allRender[1];
-
     console.log("dataAllGames", dataAllGames);
-    console.log("dataGenresList", dataGenresList);
-    console.log("dataTags", dataTagsList);
-    console.log("dataFeatureGame", dataFeatureGame);
-    console.log("gameDescript", gameDescript);
-  });
+  console.log("dataGenresList", dataGenresList);
+  console.log("dataTags", dataTagsList);
+  console.log("dataFeatureGame", dataFeatureGame);
 });
 
 //Global variable
@@ -120,18 +113,18 @@ const renderImgAllGame = async () => {
 
 //Add check list;
 function addToList(data, ulList) {
-  data.forEach((tag) => {
+  data.forEach((tag, index) => {
     const liList = document.createElement("li");
     liList.innerHTML = `
-          <label title="${tag}" for="checkbox" class="checkbox-title ">${tag}</label>
-          <input type="checkbox" class="checkbox categories-input" />
+          <label title="${tag}" for="checkbox-${index}" class="checkbox-title">${tag}</label>
+          <input type="checkbox" class="checkbox categories-input" id="checkbox-${index}" value="${tag}" />
           `;
     ulList.appendChild(liList);
   });
 }
 
 //Game categories
-const renderCategories = async () => {
+const renderCategories = () => {
   try {
     const list = dataAllGames.data.map((key) => key.categories);
     const arrList = list.flat(1);
@@ -145,7 +138,7 @@ const renderCategories = async () => {
 };
 
 //Game Platform
-const renderPlatform = async () => {
+const renderPlatform = () => {
   try {
     const list = dataAllGames.data.map((key) => key.platforms);
     const arrList = list.flat(1);
@@ -159,7 +152,7 @@ const renderPlatform = async () => {
 };
 
 //Game types
-const renderTypes = async () => {
+const renderTypes = () => {
   try {
     const list = dataGenresList.data.map((key) => key.name);
     const arrList = list.flat(1);
@@ -173,14 +166,18 @@ const renderTypes = async () => {
 };
 
 //event click - game tags
-const checkbox = document.querySelector(".checkbox");
-checkbox.addEventListener("change", () => {
-  if (this.checked) {
-    searchGame();
-  } else {
-    displayHome();
-  }
-});
+// const checkbox = document.querySelector(".checkbox");
+checkbox = document.getElementById(`checkbox-${index}`);
+checkbox.addEventListener("change", checkboxEvent);
+
+function checkboxEvent() {
+  checkValue = 
+  Array.from(checkbox)
+    .filter((i) => i.checked)
+    .map((i) => i.vale);
+  console.log(checkValue);
+}
+
 //return list to html
 function searchGame() {}
 
