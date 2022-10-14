@@ -7,13 +7,13 @@
     <title>GameApp</title>
     <script src="jarva.js" defer></script>
     <link rel="stylesheet" href="resetCSS.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reworkStyle.css" />
   </head>
   <body>
     <section class="mainpage">
       <div class="navbar">
         <div class="navbar-left">
-          <span class="nav Home">Home</span>
+          <span class="nav Home" onclick="home()">Home</span>
           <span class="nav Streams">Streams</span>
           <span class="nav GameStore">Store</span>
           <span class="nav News">News</span>
@@ -30,8 +30,8 @@
       </div>
       <div class="container">
         <div class="searchbox">
-          <div class="search-fields Categories">
-            <h1 class="search-title">Categories</h1>
+          <div class="search-fields gameTags">
+            <h1 class="search-title">Game tag</h1>
             <ul>
               <li>
                 <label for="checkbox" class="checkbox-title" title="cate1"
@@ -41,8 +41,8 @@
               </li>
             </ul>
           </div>
-          <div class="search-fields Platform">
-            <h1 class="search-title">Platform</h1>
+          <div class="search-fields gameGenres">
+            <h1 class="search-title">Game genres</h1>
             <ul>
               <li>
                 <label for="checkbox" class="checkbox-title">Cate 1</label>
@@ -50,14 +50,9 @@
               </li>
             </ul>
           </div>
-          <div class="search-fields GameType">
-            <h1 class="search-title">Game types</h1>
-            <ul>
-              <li>
-                <label for="checkbox" class="checkbox-title">Cate 1</label>
-                <input type="checkbox" class="checkbox categories-input" />
-              </li>
-            </ul>
+          <div class="search-fields gameName-Id">
+            <label for="inputName" class="search-title">Search game ID</label>
+            <input type="text" id="inputName" class="inputString" placeholder="Game ID" />
           </div>
           <div class="priceFilter">
             <div class="search-fields Price">
@@ -71,23 +66,24 @@
                 <span class="stash">-</span>
                 <input
                   type="number"
-                  class="input-pricebox"
+                  class="input-pricebox Max"
                   placeholder="Max price"
                 />
               </div>
             </div>
-            <button class="applyFilter btn" onclick="searchGame()">
+            <button class="applyFilter btn" onclick="filterGames()">
               Apply Filters
             </button>
           </div>
         </div>
         <div class="gameCategory">
           <div class="gameFrontPage">
-            <ul class="ulgameFrontPage"></ul>
+            <ul class="slideDot-menu"></ul>
+            <ul class="game_imgBg"></ul>
           </div>
           <ul class="gameList">
             <li class="gameDescript">
-              <p class="gameImg">gameImg</p>
+              <div class="gameImg-wrapper">gameImg</div>
               <p class="gameName">Game name</p>
               <p class="gamePlatform">Platform</p>
               <div class="gameFooter">
