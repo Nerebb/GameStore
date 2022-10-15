@@ -67,7 +67,6 @@ body {
   border-radius: 20px;
   padding: 45px;
   flex: 1;
-  min-width: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -215,12 +214,32 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-
-  /* overflow-y: scroll; */
 }
 
 .gameList.home {
   padding-top: 20px;
+}
+
+.gameList.searchGameList {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows:auto;
+  grid-template-areas:
+  "headerCard headerCard headerCard"
+  ". . ."
+  ". . ."
+  ". . ."
+  ;
+}
+
+.gameList.searchGameList li:first-child {
+  grid-area: headerCard;
+}
+
+.gameList.searchGameList > li {
+  width: auto;
 }
 
 .gameList .gameCard {
@@ -237,6 +256,11 @@ body {
 
   display: flex;
   flex-direction: column;
+}
+
+.gameList.searchGameList .gameCard:first-child .gameImg-wrapper{
+  padding-bottom:0;
+  height:500px;
 }
 
 .gameImg-wrapper {

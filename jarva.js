@@ -45,9 +45,8 @@ Promise.all([
   renderImgFeatureGame(),
     renderImgAllGame(),
     (renderImgAllGameInterval = setInterval(renderImgAllGame, 9000));
-    (renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 9000));
-    rendergameTags(),
-    rendergameGenres();
+  renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 9000);
+  rendergameTags(), rendergameGenres();
 });
 
 //Global variable
@@ -86,14 +85,14 @@ const renderImgFeatureGame = () => {
     gameImg.innerHTML = `<img src="${game.header_image}" alt="${game.name}">`;
 
     featureGameTotalImg.append(gameImg);
-    featureGameTotalImg.classList.add("fade10s")
+    featureGameTotalImg.classList.add("fade10s");
     randomFeatureGames = [];
   });
 };
 
 const addGameToList = (gameList, pageDesination) => {
   randomAllGames.innerHTML = "";
-  randomAllGames.classList.add(`${pageDesination}`);
+  randomAllGames.className = `gameList ${pageDesination}`;
   gameList.forEach((key) => {
     const liAllGame = document.createElement("li");
     liAllGame.classList.add("gameCard");
@@ -173,6 +172,7 @@ function setCurrentFilters() {
     ...document.querySelectorAll(".checkbox.genres:checked"),
   ].map((e) => e.value);
 }
+
 //Apply filters
 let urlGameTags = "";
 let urlGenres = "";
@@ -181,6 +181,8 @@ let filteredGames = [];
 
 async function filterGames() {
   try {
+    clearInterval(renderImgFeatureGameInterval);
+    clearInterval(renderImgAllGameInterval);
     if (Object.keys(checkboxGameTags).length) {
       qString = buildQsParams(checkboxGameTags);
       urlGameTags = "steamspy-tags" + "=" + qString;
@@ -190,10 +192,13 @@ async function filterGames() {
       urlGenres = "genres" + "=" + qString;
     }
     combineString = "games?" + urlGameTags + "&" + urlGenres;
+
     filteredGames = await getData(combineString);
-    clearInterval(renderImgAllGameInterval);
     featureGames.style.display = "none";
-    addGameToList(filteredGames.data);
+
+    // const result = priceGameFilter(filteredGames.data)
+    // console.log(result);
+    addGameToList(filteredGames.data, "searchGameList");
     combineString = "";
   } catch (error) {
     console.log("filterGamesErr", filterGames);
@@ -206,15 +211,16 @@ const minPrice = document.querySelector(".input-pricebox.Min");
 const maxPrice = document.querySelector(".input-pricebox.Max");
 let minPriceFilter;
 let maxPriceFilter;
-
-function priceGameFilter() {
-  dataAllGames.data.forEach(() => {
-    minPriceFilter = !minPrice.value ? 0 : Number(minPrice.value);
-    maxPriceFilter = !maxPrice.value
-      ? dataAllGames.data.reduce((prev, current) =>
-          prev.price > current.price ? prev.price : current.price
-        )
-      : Number(maxPrice.value);
+function priceGameFilter(data) {
+  minPriceFilter = !minPrice.value ? 0 : Number(minPrice.value);
+  return data.filter((i) => {
+    let result = true;
+    if (maxPriceFilter) {
+      result = i.price <= maxPriceFilter && i.price >= minPriceFilter;
+    } else {
+      result = i.price >= minPriceFilter;
+    }
+    return result;
   });
 }
 
@@ -223,20 +229,20 @@ let gameID = "";
 const inputString = document.querySelector(".inputString");
 inputString.addEventListener("input", idFilter);
 function idFilter() {
-  document.querySelectorAll(".checkbox").disabled = true;
+  const disable = !!inputString.value.length
+  document
+    .querySelectorAll(".checkbox")
+    .forEach((checkbox) => (checkbox.disabled = disable));
   gameID = buildQsParams(inputString.value);
 }
 
-
-
 function home() {
-  clearInterval(renderImgAllGameInterval)
-  clearInterval(renderImgFeatureGameInterval)
+  clearInterval(renderImgAllGameInterval);
+  clearInterval(renderImgFeatureGameInterval);
   featureGames.style.display = "block";
   renderImgFeatureGame(),
-  renderImgAllGame(),
-  (renderImgAllGameInterval = setInterval(renderImgAllGame, 10000));
-  (renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 15000));
-  rendergameTags(),
-  rendergameGenres();
+    renderImgAllGame(),
+    (renderImgAllGameInterval = setInterval(renderImgAllGame, 10000));
+  renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 15000);
+  rendergameTags(), rendergameGenres();
 }
