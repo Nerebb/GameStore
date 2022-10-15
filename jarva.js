@@ -1,5 +1,4 @@
 const API_URL = "https://cs-steam-game-api.herokuapp.com/";
-
 //getData
 const getData = async (endPoint, args = {}) => {
   try {
@@ -45,7 +44,8 @@ Promise.all([
 
   renderImgFeatureGame(),
     renderImgAllGame(),
-    // setInterval(renderImgAllGame, 3000);
+    (renderImgAllGameInterval = setInterval(renderImgAllGame, 9000));
+    (renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 9000));
     rendergameTags(),
     rendergameGenres();
 });
@@ -61,7 +61,7 @@ const inputMaxPrice = document.querySelector(".input-pricebox.Max");
 //---Game frontpage
 const featureGames = document.querySelector(".gameFrontPage");
 const ulSlideDot = document.querySelector(".slideDot-menu");
-const ulGameImg = document.querySelector(".game_imgBg");
+const featureGameTotalImg = document.querySelector(".featureGameTotalImg");
 const randomAllGames = document.querySelector(".gameList");
 
 let randomGames = [];
@@ -77,47 +77,28 @@ const renderImgFeatureGame = () => {
     randomFeatureGames.push(dataFeatureGame.data[featureGameIdx]);
     featureGameIdx += 1;
   }
-  ulSlideDot.innerHTML = "";
-  ulGameImg.innerHTML = "";
+  featureGameTotalImg.innerHTML = "";
 
-  randomFeatureGames.forEach((game, index) => {
-    const liGameImg = document.createElement("li");
-    const bgGameImg = document.createElement("div");
+  randomFeatureGames.forEach((game) => {
+    const gameImg = document.createElement("div");
+    gameImg.setAttribute("class", `featureGameImg-wrapper`);
+    gameImg.classList.add("swiper-slide");
+    gameImg.innerHTML = `<img src="${game.header_image}" alt="${game.name}">`;
 
-    bgGameImg.setAttribute("class", `slide slide-img${index + 1}`);
-    liGameImg.setAttribute("class", `slide-dot-${index + 1}`);
-
-    if (index === 0) {
-      liGameImg.innerHTML = `<input id="slideDot-${
-        index + 1
-      }"type="radio" name="sildes" checked/>`;
-    } else {
-      liGameImg.innerHTML = `<input id="slideDot-${
-        index + 1
-      }"type="radio" name="sildes"/>`;
-    }
-
-    const slideDot = document.createElement("label");
-    slideDot.setAttribute("for", `slideDot-${index + 1}`);
-    slideDot.setAttribute("class", `slide dot-${index + 1}`);
-
-    bgGameImg.style.backgroundImage = `url(${game.header_image})`;
-
-    liGameImg.appendChild(bgGameImg);
-    ulSlideDot.appendChild(slideDot);
-    ulGameImg.append(liGameImg);
-
+    featureGameTotalImg.append(gameImg);
+    featureGameTotalImg.classList.add("fade10s")
     randomFeatureGames = [];
   });
 };
 
-const addGameToList = (gameList) => {
+const addGameToList = (gameList, pageDesination) => {
   randomAllGames.innerHTML = "";
+  randomAllGames.classList.add(`${pageDesination}`);
   gameList.forEach((key) => {
     const liAllGame = document.createElement("li");
     liAllGame.classList.add("gameCard");
     const priceTag = key.price === 0 ? "Free" : `$${key.price}`;
-    liAllGame.innerHTML =`
+    liAllGame.innerHTML = `
     <div class="gameImg-wrapper">
       <img class="gameImg" src="${key.header_image}" alt="headGameImg" />
     </div>
@@ -130,6 +111,7 @@ const addGameToList = (gameList) => {
         <button class="btn-buy btn" onclick="">Buy</button>
       </div>
         `;
+    liAllGame.classList.add("fade10s");
     randomAllGames.appendChild(liAllGame);
   });
 };
@@ -141,7 +123,7 @@ const renderImgAllGame = () => {
     randomGames.push(dataAllGames.data[gameIdx]);
     gameIdx += 1;
   }
-  addGameToList(randomGames);
+  addGameToList(randomGames, "home");
   randomGames = [];
 };
 
@@ -209,6 +191,7 @@ async function filterGames() {
     }
     combineString = "games?" + urlGameTags + "&" + urlGenres;
     filteredGames = await getData(combineString);
+    clearInterval(renderImgAllGameInterval);
     featureGames.style.display = "none";
     addGameToList(filteredGames.data);
     combineString = "";
@@ -240,6 +223,20 @@ let gameID = "";
 const inputString = document.querySelector(".inputString");
 inputString.addEventListener("input", idFilter);
 function idFilter() {
-    document.querySelectorAll(".checkbox").disabled = true;
-    gameID = buildQsParams(inputString.value);
+  document.querySelectorAll(".checkbox").disabled = true;
+  gameID = buildQsParams(inputString.value);
+}
+
+
+
+function home() {
+  clearInterval(renderImgAllGameInterval)
+  clearInterval(renderImgFeatureGameInterval)
+  featureGames.style.display = "block";
+  renderImgFeatureGame(),
+  renderImgAllGame(),
+  (renderImgAllGameInterval = setInterval(renderImgAllGame, 10000));
+  (renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 15000));
+  rendergameTags(),
+  rendergameGenres();
 }

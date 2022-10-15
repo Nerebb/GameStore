@@ -8,6 +8,11 @@
     <script src="jarva.js" defer></script>
     <link rel="stylesheet" href="resetCSS.css" />
     <link rel="stylesheet" href="reworkStyle.css" />
+    <!-- ---SwipeJs--- -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
+    />
   </head>
   <body>
     <section class="mainpage">
@@ -52,7 +57,12 @@
           </div>
           <div class="search-fields gameName-Id">
             <label for="inputName" class="search-title">Search game ID</label>
-            <input type="text" id="inputName" class="inputString" placeholder="Game ID" />
+            <input
+              type="text"
+              id="inputName"
+              class="inputString"
+              placeholder="Game ID"
+            />
           </div>
           <div class="priceFilter">
             <div class="search-fields Price">
@@ -77,9 +87,11 @@
           </div>
         </div>
         <div class="gameCategory">
-          <div class="gameFrontPage">
-            <ul class="slideDot-menu"></ul>
-            <ul class="game_imgBg"></ul>
+          <div class="gameFrontPage-wrapper">
+            <div class="gameFrontPage swiper">
+              <div class="featureGameTotalImg swiper-wrapper"></div>
+              <div class="swiper-pagination"></div>
+            </div>
           </div>
           <ul class="gameList">
             <li class="gameDescript">
@@ -113,5 +125,20 @@
         </div>
       </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+      var swiper = new Swiper(".gameFrontPage", {
+        // spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+    </script>
   </body>
 </html>
