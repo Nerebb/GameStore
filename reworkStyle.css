@@ -2,12 +2,17 @@
   display: none;
 }
 
+.searchbox.singleGame {
+  display: none;
+}
+
 body {
   background-color: #4b6587;
   color: #c8c6c6;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 
   width: 100%;
+  position: relative;
 }
 
 .nav {
@@ -15,7 +20,6 @@ body {
 }
 
 .mainpage {
-  margin: auto;
   margin-top: 5%;
   margin-bottom: 5%;
   width: 85%;
@@ -24,6 +28,12 @@ body {
   padding: 80px;
   padding-top: 30px;
   border-radius: 30px;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .navbar {
@@ -40,6 +50,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .navbar-right img {
@@ -67,9 +78,30 @@ body {
   border-radius: 20px;
   padding: 45px;
   flex: 1;
+  max-width: 500px;
+  min-height: 600px;
+  max-height: 1020px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  position: relative;
+}
+
+.mobileSearch {
+  display: none;
+  width: 450px;
+  height: 1020px;
+  position: absolute;
+  top: 35px;
+  left: 38px;
+  background-color: #0f131a;
+  z-index: 2;
+}
+
+.searchbox .menuIcon {
+  font-size: 24px;
+  position: absolute;
+  top: 15px;
+  left: 42px;
 }
 
 .search-title {
@@ -180,12 +212,16 @@ body {
 /* ----------gameList----------- */
 .gameCategory {
   flex: 1;
-  max-width: 1050px;
+  max-width: 1100px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.gameCategory.singleGame {
+  max-width: none;
 }
 /* ----gameFeature----- */
 .gameFrontPage-wrapper {
@@ -220,18 +256,38 @@ body {
   padding-top: 20px;
 }
 
+.gameList.singleDetail {
+  max-width: none;
+  width: 100%;
+  height: auto;
+}
+
+.gameList.singleDetail .gameCard {
+  max-width: none;
+  width: 100%;
+  height: auto;
+}
+
+.gameList.singleDetail .gameImg-wrapper {
+  padding-bottom: 50%;
+}
+
+.gameList.singleDetail .gameContent {
+  max-width: none;
+}
+
 .gameList.searchGameList {
   width: 100%;
   height: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows:auto;
+  grid-template-rows: auto;
+  gap: 20px;
   grid-template-areas:
-  "headerCard headerCard headerCard"
-  ". . ."
-  ". . ."
-  ". . ."
-  ;
+    "headerCard headerCard headerCard"
+    ". . ."
+    ". . ."
+    ". . .";
 }
 
 .gameList.searchGameList li:first-child {
@@ -250,34 +306,35 @@ body {
 
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 20px;
-  padding: 3%;
-  width: 26%;
+  padding: 25px;
+  width: 27.5%;
   height: 495px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 
-.gameList.searchGameList .gameCard:first-child .gameImg-wrapper{
-  padding-bottom:0;
-  height:500px;
+.gameList.searchGameList .gameCard:first-child .gameImg-wrapper {
+  padding-bottom: 0;
+  height: 500px;
+}
+
+.gameList.searchGameList .gameCard:first-child .gameContent {
+  max-width: 100%;
+  width: 100%;
 }
 
 .gameImg-wrapper {
   width: 100%;
   padding-bottom: 100%;
-  position: relative;
-}
-
-.gameImg {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-  position: absolute;
+  border-radius: 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .gameContent {
+  max-width: 300px;
   margin-top: 2%;
   flex: 1;
   display: flex;
@@ -310,7 +367,6 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 50px;
 }
 
 .btn {
@@ -322,9 +378,8 @@ body {
 }
 
 .btn-buy {
-  margin-left: 5%;
-  flex: 1;
-  height: 100%;
+  padding: 15px 75px;
+  /* height: 50px; */
   border-radius: 25px;
 }
 
@@ -338,6 +393,10 @@ body {
 
 .btn:active {
   box-shadow: inset 0px 0px 5px 0px #000000;
+}
+
+.fadeIn {
+  animation: fadeIn 3s;
 }
 
 .fade10s {
@@ -366,7 +425,29 @@ body {
   }
 }
 
-@media screen and (max-width: 1500px) {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .hidden {
+    display: block;
+  }
+
   .mainpage {
     max-width: 1100px;
   }
@@ -384,28 +465,145 @@ body {
   .searchbox {
     display: none;
   }
+  .searchbox.mobileSearch {
+    display: block;
+  }
+
+  .blur {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+  }
 }
 
 @media screen and (max-width: 1200px) {
   .mainpage {
     max-width: 900px;
   }
+
+  .gameList.searchGameList {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "headerCard ."
+      ". . "
+      ". . "
+      ". . "
+      ". . ";
+  }
+
+  .gameList .gameCard {
+    height: 570px;
+  }
 }
 
 @media screen and (max-width: 900px) {
   .mainpage {
-    max-width: 650px;
+    max-width: 460px;
   }
 
   .gameList.home .gameCard {
-    width: 43%;
+    width: 37%;
+  }
+
+  .btn-buy {
+    padding: 10px 35px;
+    /* height: 40px; */
+    border-radius: 18px;
+  }
+
+  .gameList.home .gameCard {
+    height: 450px;
   }
 
   .gameList.home .gameCard:last-child {
     display: none;
   }
-}
 
+  .gameList.searchGameList {
+    grid-template-columns: 100% ;
+    grid-template-areas:
+    "headerCard"
+    ".";
+}}
+
+@media screen and (max-width: 469px) {
+  .mainpage {
+    max-width: 350px;
+    margin-top: 2%;
+    padding: 20px;
+    padding-top: 15px;
+    border-radius: 10px;
+  }
+
+  .navbar {
+    font-size: 14px;
+    height: 25px;
+  }
+
+  .navbar-right img {
+    height: 18px;
+  }
+
+  .container {
+    margin-top: 5px;
+  }
+
+  .gameFrontPage-wrapper {
+    margin-top: 10px;
+  }
+
+  .gameList.home {
+    padding-top: 20px;
+  }
+
+  .gameList.home .gameCard {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .gameList.home .gameCard:last-child {
+    display: flex;
+  }
+
+  .mobileSearch {
+    padding: 45px 15px 15px;
+    width: 92%;
+    top: 0;
+    left: 0;
+  }
+
+  .searchbox .menuIcon {
+    font-size: 14px;
+    top: 21px;
+    left: 20px;
+  }
+
+  .mobileSearch li {
+    margin-bottom: 0px;
+  }
+
+  .checkbox {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
+
+  .checkbox-title {
+    font-size: 14px;
+    margin-left: 5px;
+  }
+
+  .gameList.singleDetail .gameContent {
+    max-width: 300px;
+  }
+
+  .btn-buy {
+    padding: 10px 50px;
+    border-radius: 18px;
+  }
+}
 :root {
   --swiper-pagination-color: #007aff;
   --swiper-pagination-bullet-size: 16px;

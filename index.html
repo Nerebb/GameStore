@@ -8,6 +8,10 @@
     <script src="jarva.js" defer></script>
     <link rel="stylesheet" href="resetCSS.css" />
     <link rel="stylesheet" href="reworkStyle.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
     <!-- ---SwipeJs--- -->
     <link
       rel="stylesheet"
@@ -18,9 +22,16 @@
     <section class="mainpage">
       <div class="navbar">
         <div class="navbar-left">
+          <div class="menuIcon hidden">
+            <i
+              class="fa-solid fa-bars mobile-menu-icon"
+              onclick="ShowSearchBox()"
+            ></i>
+          </div>
           <span class="nav Home" onclick="home()">Home</span>
-          <span class="nav Streams">Streams</span>
-          <span class="nav GameStore">Store</span>
+          <span class="nav GameStore" onclick="allFeaturedGames()"
+            >Featured</span
+          >
           <span class="nav News">News</span>
         </div>
         <div class="navbar-right">
@@ -35,6 +46,12 @@
       </div>
       <div class="container">
         <div class="searchbox">
+          <div class="menuIcon hidden">
+            <i
+              class="fa-solid fa-bars mobile-menu-icon"
+              onclick="ShowSearchBox()"
+            ></i>
+          </div>
           <div class="search-fields gameTags">
             <h1 class="search-title">Game tag</h1>
             <ul>

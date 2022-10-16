@@ -95,12 +95,17 @@ const addGameToList = (gameList, pageDesination) => {
   randomAllGames.className = `gameList ${pageDesination}`;
   gameList.forEach((key) => {
     const liAllGame = document.createElement("li");
-    liAllGame.classList.add("gameCard");
+    if (pageDesination === "home") {
+      liAllGame.setAttribute("class", "gameCard fade10s");
+    } else {
+      liAllGame.setAttribute("class", "gameCard fadeIn");
+    }
+
+    const gameImg = document.createElement("div");
+    gameImg.setAttribute("class", "gameImg-wrapper");
+    gameImg.style.backgroundImage = `url("${key.header_image}")`;
     const priceTag = key.price === 0 ? "Free" : `$${key.price}`;
     liAllGame.innerHTML = `
-    <div class="gameImg-wrapper">
-      <img class="gameImg" src="${key.header_image}" alt="headGameImg" />
-    </div>
       <div class="gameContent">
         <p class="gameName">${key.name}</p>
         <p title="${key.developer}" class="gameDev">${key.developer}</p>
@@ -110,9 +115,40 @@ const addGameToList = (gameList, pageDesination) => {
         <button class="btn-buy btn" onclick="">Buy</button>
       </div>
         `;
-    liAllGame.classList.add("fade10s");
+    liAllGame.appendChild(gameImg);
     randomAllGames.appendChild(liAllGame);
   });
+};
+
+//Detail game
+const addDetailGame = (game) => {
+
+  document.querySelector(".gameCategory").classList.add("singleGame");
+  document.querySelector(".menuIcon").classList.remove("hidden");
+
+  randomAllGames.innerHTML = "";
+  randomAllGames.className = `gameList singleDetail`;
+  const liAllGame = document.createElement("li");
+  liAllGame.setAttribute("class", "gameCard fadeIn");
+  const gameImg = document.createElement("div");
+  gameImg.setAttribute("class", "gameImg-wrapper");
+  gameImg.style.backgroundImage = `url("${game.header_image}")`;
+  const priceTag = game.price === 0 ? "Free" : `$${game.price}`;
+  liAllGame.innerHTML = `
+      <div class="gameContent">
+        <p class="gameName">${game.name}</p>
+        <br>
+        <p class="gamedetail">${game.description}</p>
+        <br>
+        <p title="${game.developer}" class="gameDev">${game.developer}</p>
+        <p class="gamePlatform">${game.platforms}</p>
+        <div class="gameFooter">
+        <p class="gamePrice">${priceTag}</p>
+        <button class="btn-buy btn" onclick="">Buy</button>
+      </div>
+        `;
+  liAllGame.appendChild(gameImg);
+  randomAllGames.appendChild(liAllGame);
 };
 
 //All game list
@@ -181,8 +217,15 @@ let filteredGames = [];
 
 async function filterGames() {
   try {
+    //resetData
+    urlGameTags = "";
+    urlGenres = "";
+    randomAllGames.innerHTML = "";
+    featureGames.style.display = "none";
+    document.querySelector(".searchbox").classList.remove("mobileSearch")
     clearInterval(renderImgFeatureGameInterval);
     clearInterval(renderImgAllGameInterval);
+
     if (Object.keys(checkboxGameTags).length) {
       qString = buildQsParams(checkboxGameTags);
       urlGameTags = "steamspy-tags" + "=" + qString;
@@ -191,19 +234,25 @@ async function filterGames() {
       qString = buildQsParams(checkboxGenres);
       urlGenres = "genres" + "=" + qString;
     }
-    combineString = "games?" + urlGameTags + "&" + urlGenres;
+    // combineString = "games?" + urlGameTags + "&" + urlGenres;
+    if (urlGameTags || urlGenres) {
+      combineString = "games?" + urlGameTags + "&" + urlGenres;
+    } else if (gameID) {
+      combineString = "single-game/" + gameID;
+    }
 
     filteredGames = await getData(combineString);
-    featureGames.style.display = "none";
 
-    // const result = priceGameFilter(filteredGames.data)
-    // console.log(result);
-    addGameToList(filteredGames.data, "searchGameList");
-    combineString = "";
+    let result = filteredGames.data;
+    if (!inputString.value.length) {
+      result = priceGameFilter(result);
+      addGameToList(result, "searchGameList");
+    } else {
+      addDetailGame(result);
+    }
   } catch (error) {
     console.log("filterGamesErr", filterGames);
   }
-  console.log("filteredGames", filteredGames);
 }
 
 //Search game by price
@@ -213,6 +262,7 @@ let minPriceFilter;
 let maxPriceFilter;
 function priceGameFilter(data) {
   minPriceFilter = !minPrice.value ? 0 : Number(minPrice.value);
+  maxPriceFilter = Number(maxPrice.value);
   return data.filter((i) => {
     let result = true;
     if (maxPriceFilter) {
@@ -229,20 +279,39 @@ let gameID = "";
 const inputString = document.querySelector(".inputString");
 inputString.addEventListener("input", idFilter);
 function idFilter() {
-  const disable = !!inputString.value.length
+  const disable = !!inputString.value.length;
   document
     .querySelectorAll(".checkbox")
     .forEach((checkbox) => (checkbox.disabled = disable));
-  gameID = buildQsParams(inputString.value);
+  gameID = inputString.value;
 }
 
 function home() {
   clearInterval(renderImgAllGameInterval);
   clearInterval(renderImgFeatureGameInterval);
+  document.querySelector(".gameCategory").classList.remove("singleGame");
+  document.querySelector(".searchbox").classList.remove("singleGame");
   featureGames.style.display = "block";
   renderImgFeatureGame(),
     renderImgAllGame(),
     (renderImgAllGameInterval = setInterval(renderImgAllGame, 10000));
   renderImgFeatureGameInterval = setInterval(renderImgFeatureGame, 15000);
   rendergameTags(), rendergameGenres();
+}
+
+function allFeaturedGames() {
+  randomAllGames.innerHTML = "";
+  featureGames.style.display = "none";
+  clearInterval(renderImgFeatureGameInterval);
+  clearInterval(renderImgAllGameInterval);
+  addGameToList(dataFeatureGame.data, "searchGameList");
+}
+
+function ShowSearchBox() {
+
+
+  document.querySelector(".searchbox").classList.toggle("mobileSearch");
+  document.querySelector(".menuIcon").classList.toggle("topUp");
+
+  document.querySelector(".searchbox.mobileSearch").style.display = "block";
 }
